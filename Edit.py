@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 import json
 from tkinter import messagebox
 
-
+user_pc = os.getlogin()
 
 
 class edit_data:
@@ -31,7 +31,7 @@ class edit_data:
         self.password2.set(self.id_password)
         
     def load_key(self):
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\key\\filekey.key", "rb")as file:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\key\\filekey.key", "rb")as file:
             return file.read()
         
     def save(self):
@@ -50,15 +50,15 @@ class edit_data:
             key = self.load_key()
             fernet = Fernet(key)
             
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as file:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as file:
                 text = file.read()
                 
             decry = fernet.decrypt(text)
             
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as file2:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as file2:
                 file2.write(decry)
                 
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")as file3:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")as file3:
                 var1 = json.load(file3)
                 
             var1[self.id_key] = {"Page": page2,
@@ -66,15 +66,15 @@ class edit_data:
                                  "Email": email2,
                                  "Password": password2}
             
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "w")as file4:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "w")as file4:
                 json.dump(var1, file4, indent=4)
             
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as file5:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as file5:
                 text2 = file5.read()
                 
             encryp = fernet.encrypt(text2)
             
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as file6:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as file6:
                 file6.write(encryp)
             
             

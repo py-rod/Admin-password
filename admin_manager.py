@@ -9,6 +9,7 @@ from tkinter import messagebox
 import subprocess
 from Edit import edit_data
 
+user_pc = os.getlogin()
  
 class interface_window:
     def __init__(self, ide):
@@ -29,13 +30,13 @@ class interface_window:
       
     def create_key(self):
         key = Fernet.generate_key()
-        os.mkdir(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\key")
-        subprocess.call(f"attrib +h C:\\Users\\P-rod\\Crypkey\\{self.ide}\\key", shell=True)
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\key\\filekey.key", "wb")as file:
+        os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\key")
+        subprocess.call(f"attrib +h C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\key", shell=True)
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\key\\filekey.key", "wb")as file:
             return file.write(key)
         
     def load_key(self):
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\key\\filekey.key", "rb")as file:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\key\\filekey.key", "rb")as file:
             return file.read()
                     
     #Credits
@@ -98,7 +99,7 @@ class interface_window:
         self.table.heading("#3", text="Email")
         self.table.heading("#4", text="Password")
         
-        veri = os.path.exists(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")
+        veri = os.path.exists(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")
         
         if veri:
             #Load key
@@ -106,18 +107,18 @@ class interface_window:
             fernet = Fernet(key)
             
             #Read json
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as file:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as file:
                 text = file.read()
             
             #Desencry json
             decryp = fernet.decrypt(text)
             
             #Write json desencrypte
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as q_write:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as q_write:
                 q_write.write(decryp)
             
             #Read json
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")as q_read:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")as q_read:
                 var1 = json.load(q_read)
                 
                 #Contador
@@ -133,14 +134,14 @@ class interface_window:
                     self.table.insert("", i, text=f"{k}", values=(v["Page"], v["User"], v["Email"], v["Password"]))
             
             #Read json
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as w_file:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as w_file:
                 text2 = w_file.read()
                 
             #Encryp json
             new_encryp = fernet.encrypt(text2)
             
             #Write json encryp
-            with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as e_file:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as e_file:
                 e_file.write(new_encryp)
         else:
             self.table.insert("", 0, text="No hay nada")
@@ -176,28 +177,28 @@ class interface_window:
         key = self.load_key()
         fernet = Fernet(key)
         
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as file:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as file:
             text = file.read()
             
         decryp = fernet.decrypt(text)
         
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as file2:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as file2:
             file2.write(decryp)
             
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")as file3:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")as file3:
             var1 = json.load(file3)
             
         var1.pop(key_id)
         
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "w")as file4:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "w")as file4:
             json.dump(var1, file4, indent=4)
         
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as file5:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as file5:
             text2 = file5.read()
             
         encryp = fernet.encrypt(text2)
         
-        with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as file6:
+        with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as file6:
             file6.write(encryp)
         
         self.data_table()
@@ -218,7 +219,7 @@ class interface_window:
         elif len(password) == 0:
             messagebox.showinfo(message="Empty password")
         else:
-            check = os.path.exists(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")
+            check = os.path.exists(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")
             user = self.user.get()
             if check:
                 #Charge key
@@ -226,38 +227,38 @@ class interface_window:
                 fernet = Fernet(key)
 
                 #Read file 
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as fiile:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as fiile:
                     text2 = fiile.read()
                 #Desencriptando
                 decry2 = fernet.decrypt(text2)
                 
                 #Write to json
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as qfile:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as qfile:
                     qfile.write(decry2)
                 
                 #Read json
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json")as read_file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json")as read_file:
                     var1 = json.load(read_file)
                     var1[self.__id()] = {"Page": page,
                                         "User": user,
                                         "Email": email,
                                         "Password": password}
                     #Inyectando nuevos valores al json 
-                    with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "w")as w:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "w")as w:
                             json.dump(var1, w, indent=4)
                             self.page.set("")
                             self.user.set("")
                             self.email.set("")
                             self.password.set("")
                     #Leyendo para empezar a encriptar     
-                    with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as f_file:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as f_file:
                             r = f_file.read()
                             
                     #Encriptando                    
                     new_encryp = fernet.encrypt(r)
                     
                     #Escribiendo la informacion de manera encriptada
-                    with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as r_file:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as r_file:
                         r_file.write(new_encryp)
                 
                 #Cargando base de datos    
@@ -277,17 +278,17 @@ class interface_window:
                                             "Email": email,
                                             "Password": password})
                 
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "w")as file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "w")as file:
                     json.dump(data, file, indent=4)
                     
                     #Read file to encryp
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "rb")as f_read:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "rb")as f_read:
                     text = f_read.read()
                         
                 encryp = fernet.encrypt(text)
                         
                         #write file encryp
-                with open(f"C:\\Users\\P-rod\\Crypkey\\{self.ide}\\data.json", "wb")as w_file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\{self.ide}\\data.json", "wb")as w_file:
                     w_file.write(encryp)
                             
                     #Limpiando entrys

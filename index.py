@@ -10,17 +10,17 @@ from new_user import New_User
 from admin_manager import interface_window
 
 
-
+user_pc  = os.getlogin()
 
 def create_key():
     key = Fernet.generate_key()
-    os.mkdir("C:\\Users\\P-rod\\Crypkey\\key")
-    subprocess.call("attrib +h C:\\Users\\P-rod\\Crypkey\\key",shell=True)
-    with open("C:\\Users\\P-rod\\Crypkey\\key\\filekey.key", "wb")as file:
+    os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey\\key")
+    subprocess.call(f"attrib +h C:\\Users\\{user_pc}\\Crypkey\\key",shell=True)
+    with open(f"C:\\Users\\{user_pc}\\Crypkey\\key\\filekey.key", "wb")as file:
         return file.write(key)
 
 def load_key():
-    return open("C:\\Users\\P-rod\\Crypkey\\key\\filekey.key", "rb").read()
+    return open(f"C:\\Users\\{user_pc}\\Crypkey\\key\\filekey.key", "rb").read()
 
 
 class Window:
@@ -51,32 +51,33 @@ class Window:
         else:
             key = load_key()
             fernet = Fernet(key)
-            with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as file:
+            with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as file:
                 text = file.read()
                 decryp = fernet.decrypt(text)
                 
-                with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as new_file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as new_file:
                     new_file.write(decryp)
                 
-                with open("C:\\Users\\P-rod\\Crypkey\\data.json")as read_json:
+
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json")as read_json:
                     var1 = json.load(read_json)
                         
                 for k, v in var1.items():
                     if user == v["User"]:
                         if user == v["User"] and password == v["Password1"]:
-                            with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as readd:
+                            with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as readd:
                                 text2 = readd.read()
                             new_encryp = fernet.encrypt(text2)
-                            with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as ff:
+                            with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as ff:
                                 ff.write(new_encryp)
                                 self.root.destroy()
                                 interface_window(k)
                         else:
                             messagebox.showerror(message="The user or password is incorrect")
-                            with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as read_:
+                            with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as read_:
                                 var2 = read_.read()
                             encryp = fernet.encrypt(var2)
-                            with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as new_write:
+                            with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as new_write:
                                 new_write.write(encryp)
                                 self.user.set("")
                                 self.password.set("")

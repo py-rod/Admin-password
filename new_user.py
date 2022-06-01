@@ -8,16 +8,17 @@ import json
 from tkinter import messagebox
 import subprocess
 
+user_pc = os.getlogin()
 
 def create_key():
     key = Fernet.generate_key()
-    os.mkdir("C:\\Users\\P-rod\\Crypkey\\key")
-    subprocess.call("attrib +h C:\\Users\\P-rod\\Crypkey\\key",shell=True)
-    with open("C:\\Users\\P-rod\\Crypkey\\key\\filekey.key", "wb")as file:
+    os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey\\key")
+    subprocess.call(f"attrib +h C:\\Users\\{user_pc}\\Crypkey\\key",shell=True)
+    with open(f"C:\\Users\\{user_pc}\\Crypkey\\key\\filekey.key", "wb")as file:
         return file.write(key)
 
 def load_key():
-    return open("C:\\Users\\P-rod\\Crypkey\\key\\filekey.key", "rb").read()
+    return open(f"C:\\Users\\{user_pc}\\Crypkey\\key\\filekey.key", "rb").read()
 
 
 class New_User:
@@ -80,59 +81,59 @@ class New_User:
             messagebox.showinfo(message="Password empty")
         else:
             #Check exist path
-            veri = os.path.exists("C:\\Users\\P-rod\\Crypkey")
+            veri = os.path.exists(f"C:\\Users\\{user_pc}\\Crypkey")
             if veri:
                 #Create user if exist data base
                 key = load_key()
                 fernet = Fernet(key)
                 
                 #Read data for to decrypt
-                with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as file:
                     read_data = file.read()
                     
                     decry = fernet.decrypt(read_data)
                     
                     #Write data decrypt in data.json
-                    with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as write_fil:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as write_fil:
                         write_fil.write(decry)
                     
                     #Prepared data to add to data base
-                    with open("C:\\Users\\P-rod\\Crypkey\\data.json")as read:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json")as read:
                         var1 = json.load(read)
                         var1[ide] = {"Email": email,
                                     "User": user,
                                     "Password1": password1}
                         
                         #Create folder with user id for each one
-                        os.mkdir(f"C:\\Users\\P-rod\\Crypkey\\{ide}")
+                        os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey\\{ide}")
                         
                         #Add data to data.json
-                        with open("C:\\Users\\P-rod\\Crypkey\\data.json", "w")as new_file:
+                        with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "w")as new_file:
                             json.dump(var1, new_file,indent=4)
                             
                         #Prepared to encrypt
-                        with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as N:
+                        with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as N:
                             var2 = N.read()
                         
                         new_encryp  = fernet.encrypt(var2)
                         
                         #Write encrypt
-                        with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as encry:
+                        with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as encry:
                             encry.write(new_encryp)
                             
                             self.root.destroy()
             else:
                 
                 #Create firts user in app 
-                os.mkdir("C:\\Users\\P-rod\\Crypkey")
+                os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey")
                 self.data.setdefault(ide, {"Email": email,
                                            "User": user,
                                            "Password1": password1})
-                with open("C:\\Users\\P-rod\\Crypkey\\data.json", "w") as file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "w") as file:
                     json.dump(self.data,file, indent=4)
                     
                     #Create folder
-                    os.mkdir(f"C:\\Users\\P-rod\\Crypkey\\{ide}")
+                    os.mkdir(f"C:\\Users\\{user_pc}\\Crypkey\\{ide}")
                     
                 #Create key to encrypt files
                 create_key()
@@ -141,12 +142,12 @@ class New_User:
                 key = load_key()
                 fernet = Fernet(key)
         
-                with open("C:\\Users\\P-rod\\Crypkey\\data.json", "rb")as file:
+                with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "rb")as file:
                     text = file.read()
                 
                     encryp = fernet.encrypt(text)
                 
-                    with open("C:\\Users\\P-rod\\Crypkey\\data.json", "wb")as file_write:
+                    with open(f"C:\\Users\\{user_pc}\\Crypkey\\data.json", "wb")as file_write:
                         file_write.write(encryp)
                         
                         self.root.destroy()
